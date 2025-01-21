@@ -8,6 +8,8 @@ import com.example.board.post.dtos.PostListRes;
 import com.example.board.post.dtos.PostSaveReq;
 import com.example.board.post.dtos.PostUpdateReq;
 import com.example.board.post.repository.PostRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -38,6 +40,14 @@ public class PostService {
 
     public List<PostListRes> findAll() {
         return postRepository.findAll().stream().map(p->p.postListRes()).collect(Collectors.toList());
+
+    }
+    public Page<PostListRes> findAllPaging(Pageable pageable) {
+        Page<Post> pagePosts = postRepository.findAll(pageable);
+        return pagePosts.map(p->p.postListRes());
+
+        //    public List<PostListRes> findAllPaging(Pageable pageable) {
+//        return postRepository.findAll().stream().map(p->p.postListRes()).collect(Collectors.toList());
 
     }
 

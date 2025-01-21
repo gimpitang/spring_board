@@ -7,12 +7,13 @@ import com.example.board.author.dtos.AuthorSaveReq;
 import com.example.board.author.dtos.AuthorUpdateReq;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
 
-@RestController
+@Controller
 @RequestMapping("/author")
 public class AuthorController {
     private final AuthorService authorService;
@@ -29,9 +30,9 @@ public class AuthorController {
 
 
     @GetMapping("/list")
-    public ResponseEntity<?> list() {
+    public String authorList() {
         List<AuthorListRes> authorListResList = authorService.findAll();
-        return new ResponseEntity<>(authorListResList, HttpStatus.OK);
+        return "author/author_list";
     }
 
     @GetMapping("/detail/{id}")

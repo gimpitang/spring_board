@@ -17,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.PostUpdate;
@@ -33,29 +34,39 @@ public class PostRestController {
         this.postService = postService;
     }
 
+    @GetMapping("/create")
+    public String postCreate(){
+        return "post/post_create";
+    }
+
     @PostMapping("/create")
     public String postCreate(@Valid PostSaveReq postSaveReq) {
         postService.save(postSaveReq);
-        return "OK";
+        return "redirect:/post/list";
     }
 
     @GetMapping("/list")
-    private List<PostListRes> list(){
-        return postService.findAll();
+    private String list(Model model){
+        model.addAttribute("postList", postService.findAll());
+        return "/post/post_list";
     }
 
     @GetMapping("/list/paging")
+//    @ResponseBody
     //      페이징 처리를 위한 데이터 형식 : localhost:8080/post/list/paging?size=10&page=0&sort=createdTime,desc
 //    private List<PostListRes> postListPaging(@RequestParam() "size" = , @RequestParam "size = 10", @RequestParam "size = 10" ){
-    private Page<PostListRes> postListPaging(@PageableDefault(size = 10, sort = "createdTime", direction = Sort.Direction.DESC) Pageable pageable){
+    public String postListPaging(@PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable, Model model){
         System.out.println(pageable);
-            return postService.findAllPaging(pageable);
 //        return postService.findAllPaging();
+//            return postService.findAllPaging(pageable);
+        model.addAttribute("postList",postService.findAllPaging(pageable) );
+        return "/post/post_list";
     }
 
     @GetMapping("/detail/{id}")
-    public PostDetailRes postDetail (@PathVariable Long id) {
-        return postService.findById(id);
+    public String postDetail (@PathVariable Long id, Model model) {
+        model.addAttribute("post", postService.findById(id));
+        return "/post/post_detail";
     }
 
     @PostMapping("/update/{id}")

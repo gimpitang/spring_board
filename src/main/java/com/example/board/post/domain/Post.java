@@ -32,9 +32,7 @@ public class Post extends BaseTimeEntity {
     @ManyToOne(fetch =FetchType.LAZY)
     @JoinColumn(name = "author_id")
     private Author author;
-    public void setMember(Author author) {
-        this.author = author;
-    }
+
 
     public PostListRes postListRes(){
         return PostListRes.builder().id(this.id).title(this.title).authorEmail(this.author.getEmail()).build();

@@ -23,7 +23,7 @@ public class Author extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(length = 30,unique = true, nullable = false)
+    @Column(length = 30, nullable = false)
     private String name;
     @Column(nullable = false)
     private String email;

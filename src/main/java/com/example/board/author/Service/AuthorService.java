@@ -10,6 +10,8 @@ import com.example.board.post.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.BindException;
+import org.springframework.validation.BindingResult;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
@@ -31,6 +33,9 @@ public class AuthorService {
     public void save(AuthorSaveReq authorSaveReq) throws IllegalArgumentException {
         if(authorRepository.findByEmail(authorSaveReq.getEmail()).isPresent()){
             throw new IllegalArgumentException("email already exists");
+        }
+        if(authorSaveReq.getPassword().length()<8){
+            throw new BindException("비번 너무 짧아요");
         }
 
         // 아래 예외는 dto 레벨에서 어노테이션 Size 사용해서 해결하는 것으로

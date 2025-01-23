@@ -35,7 +35,7 @@ public class AuthorService {
             throw new IllegalArgumentException("email already exists");
         }
         if(authorSaveReq.getPassword().length()<8){
-            throw new BindException("비번 너무 짧아요");
+            throw new IllegalArgumentException("비번 너무 짧아요");
         }
 
         // 아래 예외는 dto 레벨에서 어노테이션 Size 사용해서 해결하는 것으로

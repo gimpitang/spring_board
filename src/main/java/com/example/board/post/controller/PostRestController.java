@@ -42,7 +42,7 @@ public class PostRestController {
     @PostMapping("/create")
     public String postCreate(@Valid PostSaveReq postSaveReq) {
         postService.save(postSaveReq);
-        return "redirect:/post/list";
+        return "redirect:/post/list/paging";
     }
 
     @GetMapping("/list")
@@ -61,6 +61,12 @@ public class PostRestController {
 //            return postService.findAllPaging(pageable);
         model.addAttribute("postList",postService.findAllPaging(pageable) );
         return "/post/post_list";
+    }
+    @GetMapping("/list/fetchjoin")
+    @ResponseBody
+    public String postListFetchJoin(){
+        postService.listFetchJoin();
+        return "fetchJoin test success";
     }
 
     @GetMapping("/detail/{id}")

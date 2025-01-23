@@ -45,12 +45,7 @@ public class Author extends BaseTimeEntity {
         this.password = dto.getPassword();
     }
 
-    public Author(String name, String email, String password) {
-        this.name = name;
-        this.email = email;
-        this.password = password;
 
-    }
     public AuthorListRes listDtoFormEntity(){
         return AuthorListRes.builder().id(this.id).name(this.name).email(this.email).build();
     }

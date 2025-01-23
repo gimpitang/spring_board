@@ -20,3 +20,7 @@ spring:
 logging:
   level:
     root: info
+
+#    별도의 errorlog 분류 없이, 날짜 구분 없이 모든 로그를 남기는 설정이다.
+  file:
+    name: logs/app.log

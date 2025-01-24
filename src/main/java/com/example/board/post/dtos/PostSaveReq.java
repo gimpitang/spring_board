@@ -19,7 +19,7 @@ public class PostSaveReq {
     private String title;
     private String contents;
     @NotEmpty
-    private String email;
+//    private String email; 어센티케이션하면서 뺏음
     private String appointment ;
 //    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")   //방법2
 //    private LocalDateTime appointmentTime;   //방법2

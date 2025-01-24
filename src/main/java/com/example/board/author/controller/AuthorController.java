@@ -64,5 +64,10 @@ public class AuthorController {
         return "Id is successfully updated";
     }
 
+    @GetMapping("/login")
+    public String authorLoginScreen() {
+        return "/author/author_login";
+    }
+
 
 }

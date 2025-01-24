@@ -8,6 +8,7 @@ import com.example.board.author.dtos.AuthorUpdateReq;
 import com.example.board.author.repository.AuthorRepository;
 import com.example.board.post.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindException;
@@ -23,10 +24,12 @@ public class AuthorService {
     @Autowired
     private final AuthorRepository authorRepository;
     private final PostRepository postRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public AuthorService(AuthorRepository authorRepository, PostRepository postRepository) {
+    public AuthorService(AuthorRepository authorRepository, PostRepository postRepository, PasswordEncoder passwordEncoder) {
         this.authorRepository = authorRepository;
         this.postRepository = postRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
 
@@ -43,8 +46,8 @@ public class AuthorService {
 //            throw new IllegalArgumentException("password must be at least 8 characters");
 //        }
 
-//        //      cascade를 활용하지 않고, 별도로 past데이터 만드는 경우
-        Author author = authorRepository.save(authorSaveReq.toEntity());
+//        //      cascade를 활용하지 않고, 별도로 post 데이터 만드는 경우
+//        Author author = authorRepository.save(authorSaveReq.toEntity());
 //        postRepository.save(Post.builder().title("방가방가").contents("하이요").author(author).build());
 
 
@@ -60,6 +63,11 @@ public class AuthorService {
 //        author.getPosts().add(Post.builder().title("방가방가!!").contents("하이요!!").author(author).build());
 //        author.getPosts().add(Post.builder().title("방가방가!!!").contents("하이요!!!").author(author).build());
 //        authorRepository.save(author);
+
+
+        //      cascade를 활용하지 않고, 별도로 post 데이터 만드는 경우 + password 암호화
+        Author author = authorRepository.save(authorSaveReq.toEntity(passwordEncoder.encode(authorSaveReq.getPassword())));
+
 
     }
 

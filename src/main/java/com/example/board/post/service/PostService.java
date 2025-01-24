@@ -10,6 +10,9 @@ import com.example.board.post.dtos.PostUpdateReq;
 import com.example.board.post.repository.PostRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -34,7 +37,9 @@ public class PostService {
     }
 
     public void save(PostSaveReq dto) {
-        Author author  = authorRepository.findByEmail(dto.getEmail()).orElseThrow(()-> new EntityNotFoundException("Author not found"));
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+//        dto.getEmail() 자리에 email 들어감 (authentication
+        Author author  = authorRepository.findByEmail(email).orElseThrow(()-> new EntityNotFoundException("Author not found"));
 //        Post post = postSaveReq.toEntity(author);     //방법 1,2
 //        postRepository.save(postSaveReq.toEntity(author));        //방법 1,2
         LocalDateTime appointmentTime = null;
@@ -49,8 +54,8 @@ public class PostService {
                     throw new IllegalArgumentException("시간이 과거입니다.");
                 }
             }
-            postRepository.save(dto.toEntity(author, appointmentTime));
         }
+            postRepository.save(dto.toEntity(author, appointmentTime));
 
     }
 
